@@ -2,13 +2,13 @@
 roms := pokered.gbc pokeblue.gbc
 
 
-.PHONY: all clean red blue yellow compare
+.PHONY: all clean red blue compare
 
 all:    $(roms)
 red:    pokered.gbc
 blue:   pokeblue.gbc
 
-versions := red blue yellow
+versions := red blue
 
 
 # Header options for rgbfix.
@@ -20,7 +20,7 @@ blue_opt   = $(dmg_opt) -t "POKEMON BLUE"
 
 
 # If your default python is 3, you may want to change this to python27.
-PYTHON := python
+PYTHON := python2
 
 # md5sum -c is used to compare rom hashes. The options may vary across platforms.
 MD5 := md5sum -c --quiet

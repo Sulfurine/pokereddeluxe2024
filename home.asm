@@ -123,7 +123,7 @@ LoadHLMoves:
     ld hl, Gen6Moves
     ret
 	
-SECTION "Initialization",HOME[$c0]
+SECTION "Initialization",ROM0[$c0]
 
 IsGBC:
 	ld hl,Start
@@ -3038,7 +3038,7 @@ Bankswitch:: ; 35d6 (0:35d6)
 	ld [$2000],a
 	ld bc,.Return
 	push bc
-	jp [hl]
+	jp hl
 .Return
 	pop bc
 	ld a,b
@@ -4550,7 +4550,7 @@ JumpTable::
 	ld l, a
 	ld de, .returnAddress
 	push de
-	jp [hl]
+	jp hl
 .returnAddress
 	pop bc
 	pop de
@@ -4738,7 +4738,7 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor:: ; 3eb5 (0:3eb5)
 	ld [H_LOADEDROMBANK], a
 	ld de, .returnAddress
 	push de
-	jp [hl]
+	jp hl
 .returnAddress
 	xor a
 	jr .done
@@ -4866,7 +4866,7 @@ InterruptWrapper:
 	ld [rSVBK],a
 	ld de,.ret
 	push de
-	jp [hl]
+	jp hl
 .ret
 	ld a,b
 	ld [rSVBK],a

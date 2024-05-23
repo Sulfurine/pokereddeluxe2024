@@ -851,7 +851,7 @@ SpecialPickMons:
 	ld d, a ; de contains PickMons pointer
 	ld h, d
 	ld l, e
-	jp [hl] ; jump to the PickMons function
+	jp hl ; jump to the PickMons function
 
 SpecialPickMonsFunctionPointers:
 	dbw HEAD_BROCK,   BrockPickMons

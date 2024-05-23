@@ -1682,11 +1682,6 @@ EnemySendOutFirstMon: ; 3c92a (f:492a)
 	ld a,[W_OPTIONS]
 	bit 6,a
 	jr nz,.next4
-IF CHALLENGE_MODE_PLUS
-	ld a,[W_OPTIONS]
-	bit 6,a
-	jr z,.next4 ; Force Set mode no matter what the bit is set to
-ENDC
 	ld hl, TrainerAboutToUseText
 	call PrintText
 	hlCoord 0, 7
@@ -2554,11 +2549,6 @@ DisplayPlayerBag:
 	ld a, [W_ISLINKBATTLE]
 	cp $4
 	jp z, DisplayBattleMenu ; prevent items from being used in Link Battles
-IF CHALLENGE_MODE_PLUS
-	ld a, [wIsTrainerBattle]
-	cp $1
-	jp z, DisplayBattleMenu ; Using items in battle is disabled in Challenge and Lunatic Modes+
-ENDC
 	; get the pointer to player's bag when in a normal battle
 	ld hl, wNumBagItems
 	ld a, l
@@ -3411,7 +3401,7 @@ ExecutePlayerMove: ; 3d65e (f:565e)
 	jp z, Func_3d80a
 	call CheckPlayerStatusConditions
 	jr nz, .asm_3d68a
-	jp [hl]
+	jp hl
 .asm_3d68a
 	call GetCurrentMove
 	ld hl, W_PLAYERBATTSTATUS1
@@ -5771,7 +5761,7 @@ ExecuteEnemyMove: ; 3e6bc (f:66bc)
 	ld [wd05b], a
 	call CheckEnemyStatusConditions
 	jr nz, .canUseMove
-	jp [hl]
+	jp hl
 .canUseMove
 	ld hl, W_ENEMYBATTSTATUS1
 	bit 4, [hl] ; is the enemy charging up for attack?
@@ -6802,28 +6792,7 @@ CalculateModifiedStat: ; 3eda5 (f:6da5)
 	ret
 
 ApplyBadgeStatBoosts: ; 3ee19 (f:6e19)
-	ld a, [W_ISLINKBATTLE]
-	cp $4
-	ret z ; return if link battle
-	ld a, [W_OBTAINEDBADGES]
-	ld b, a
-	ld hl, wBattleMonAttack
-	ld c, $4
-; the boost is applied for badges whose bit position is even
-; the order of boosts matches the order they are laid out in RAM
-; Boulder (bit 0) - attack
-; Thunder (bit 2) - defense
-; Soul (bit 4) - speed
-; Volcano (bit 6) - special
-.loop
-	srl b
-	call c, .applyBoostToStat
-	inc hl
-	inc hl
-	srl b
-	dec c
-	jr nz, .loop
-	ret
+	ret ; disabled badge stat boost
 
 ; multiply stat at hl by 1.125
 ; cap stat at 999
@@ -7311,7 +7280,7 @@ _JumpMoveEffect: ; 3f138 (f:7138)
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp [hl]       ;jump to special effect handler
+	jp hl       ;jump to special effect handler
 
 MoveEffectPointerTable: ; 3f150 (f:7150)
 	 dw SleepEffect               ; unused effect

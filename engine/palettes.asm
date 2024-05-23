@@ -27,7 +27,7 @@ Func_71ddf: ; 71ddf (1c:5ddf)
 	push de
 
 	;di
- 	jp [hl]
+ 	jp hl
 
 PalCmdRet:
 	;ei

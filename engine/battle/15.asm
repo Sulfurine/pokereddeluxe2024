@@ -28,22 +28,13 @@ GainExperience: ; 5524f (15:524f)
 	add hl, de
 	ld d, h
 	ld e, l
-IF CHALLENGE_MODE_PLUS
-; gaining stat exp is disabled in challenge mode+, only way is via vitamins
+	; disabled stat exp gain after battle, vitamins still work
 	ld hl, 0
 	ld c, $5
 .gainStatExpLoop
 	ld a, 0
 	ld b, a ; enemy mon base stat
 	ld a, 0 ; stat exp
-ELSE
-	ld hl, wEnemyMonBaseStats
-	ld c, $5
-.gainStatExpLoop
-	ld a, [hli]
-	ld b, a ; enemy mon base stat
-	ld a, [de] ; stat exp
-ENDC
 	add b ; add enemy mon base state to stat exp
 	ld [de], a
 	jr nc, .nextBaseStat
@@ -99,9 +90,6 @@ ENDC
 	ld a, [W_ISINBATTLE]
 	dec a ; is it a trainer battle?
 	call nz, BoostExp ; if so, boost exp
-IF CHALLENGE_MODE_PLUS
-	jp .SkipLuckyEgg ; for the clever people who like to toy with .sav files, even obtaining the Lucky Egg will not help your case
-ENDC
 
 	push hl
 

@@ -586,11 +586,7 @@ BattleAnimationOptionText: ; 5fde (1:5fde)
 
 BattleStyleOptionText: ; 5ffd (1:5ffd)
 	db   "BATTLE STYLE"
-IF CHALLENGE_MODE_PLUS
-	next " SET@"
-ELSE
 	next " SHIFT    SET@"
-ENDC
 
 OptionMenuCancelText: ; 6018 (1:6018)
 	db "CANCEL@"
@@ -625,11 +621,7 @@ SetOptionsFromCursorPositions: ; 601f (1:601f)
 	set 6,d
 	jr .storeOptions
 .battleStyleShift
-IF CHALLENGE_MODE_PLUS
-	set 6,d ; force Set mode in Challenge Mode+
-ELSE
 	res 6,d
-ENDC
 .storeOptions
 	ld a,d
 	ld [W_OPTIONS],a
